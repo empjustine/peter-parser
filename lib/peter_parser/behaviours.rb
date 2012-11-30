@@ -1,40 +1,47 @@
 module PeterParser
-    module HTMLParser
-        def mount_doc(data)
-            require 'nokogiri'
-            return Nokogiri::HTML(data)
-        end
+
+  module WebScraper
+    require 'mechanize'
+    require 'logger'
+
+    # initialize Mechanize agent to parse page
+    def agent(resources)
+
+      resources[:agent] ||= Mechanize.new() { |_agent|
+        _agent.user_agent_alias = 'Mac Safari'
+
+      # _agent.log = Logger.new $stderr
+      # _agent.agent.http.debug_output = $stderr
+      }
+
+      return resources[:agent]
     end
 
-    module XMLParser
-        def mount_doc(data)
-            require 'nokogiri'
-            if get_class_variable(:@page_encoding)
-                if data.match(/<\?xml.*encoding="(.*)".*\?>/){|m| m[1]}
-                    data.sub!(/(<\?xml.*encoding=").*(".*\?>)/, '\1UTF-8\2')
-                else
-                    data.sub!(/(<\?xml.*)(\?>)/, '\1 encoding="UTF-8" \2')
-                end
-                @job['data'] = data
-            end
-            return Nokogiri::XML(data)
-        end 
+    # tell Mechanize to fetch a url
+    def fetch(resources)
+
+      return resources[:page] = agent(resources).get(
+        URI resources['url']
+      )
     end
-    
-    module NetworkFile
-        def fetch_data(url)
-            require 'restclient'
-            return RestClient.get(url)
-        end
+
+    # asks for page nodeset
+    def content(resources)
+
+      return resources[:content] = resources[:page].root
     end
-    
-    module LocalFile
-        def fetch_data(url)
-            f = File.open(url)
-            content = f.inject{|a, b| a.concat(b)}
-            f.close
-            
-            return content
-        end
+  end
+
+  module JsonParser
+    require 'json'
+
+    # parses page content. meant to replace PeterParser::WebScraper for json
+    # requests
+    def content(resources)
+
+      return resources[:content] = JSON.parse(
+        resources[:page].body
+      )
     end
+  end
 end

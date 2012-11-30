@@ -14,8 +14,7 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ['lib']
 
-  s.add_runtime_dependency 'nokogiri', ['~>1.5.0']
-  s.add_runtime_dependency 'rest-client', ['~>1.6.7']
+  s.add_runtime_dependency 'mechanize', ['~>2.5.1']
   s.add_runtime_dependency 'resque', ['~>1.20']
   s.add_runtime_dependency 'rake', ['0.9.2']
 end

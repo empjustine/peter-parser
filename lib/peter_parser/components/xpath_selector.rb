@@ -1,21 +1,31 @@
 module PeterParser
-    module Components
-        class XPathSelector
-            include NonNativeComponent
-        
-            def do_init(selector, index=0..-1, &block)
-                @selector = selector
-                @index = index
-            end
-            
-            def do_extract(job)
-                res = job['doc'].xpath(@selector)[@index]
-                if @index.class == Range
-                    res.map{|el| el.content}
-                else
-                    res.content if res
-                end
-            end
-        end
+
+  module Components
+
+    class XpathSelector
+
+      def initialize(selector='./', range=0..-1)
+
+        @selector = selector
+        @range = range
+      end
+
+      def _extract!(resources)
+
+        return resources[:content].xpath(@selector)[@range]
+      end
+
+      def first
+
+        @range = 0
+      end
+
+      def content
+
+        on(:after_extract) { |element|
+          element.map(&:content)
+        }
+      end
     end
+  end
 end

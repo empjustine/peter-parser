@@ -2,3 +2,4 @@
 *.swp
 .igita_history
 Gemfile.lock
+vendor/
