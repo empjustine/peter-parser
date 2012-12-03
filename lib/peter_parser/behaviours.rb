@@ -20,6 +20,8 @@ module PeterParser
     # tell Mechanize to fetch a url
     def fetch(resources)
 
+      raise NoUrlError unless resources['url']
+
       return resources[:page] = agent(resources).get(
         URI resources['url']
       )

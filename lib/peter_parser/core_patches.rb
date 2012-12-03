@@ -48,21 +48,25 @@ module PeterParser
   end
 end
 
+#single point of insertion for CorePatches::ObjectExtract
 class Object
 
   include PeterParser::CorePatches::ObjectExtract
 end
 
+#single point of insertion for CorePatches::ListExtract
 class Array
 
   include PeterParser::CorePatches::ListExtract
 end
 
+#single point of insertion for CorePatches::ListExtract
 class Set
 
   include PeterParser::CorePatches::ListExtract
 end
 
+#single point of insertion for CorePatches::HashExtract
 class Hash
 
   include PeterParser::CorePatches::HashExtract

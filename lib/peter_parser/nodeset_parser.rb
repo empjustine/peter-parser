@@ -1,5 +1,8 @@
 module PeterParser
 
+  # Actually gets things done.
+  # Seriously this implements basic callback behaviour to get the HTML and parse
+  # it.
   class NodesetParser
 
     include PeterParser::WebScraper

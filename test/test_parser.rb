@@ -2,7 +2,7 @@
 
 def x(*args)
 
-  return PeterParser::Components::XpathSelector.new(*args)
+  return PeterParser::Components::NodesetSelector.new(*args)
 end
 
 class SaraivaParser < PeterParser::NodesetParser

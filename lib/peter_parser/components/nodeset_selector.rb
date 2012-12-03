@@ -2,17 +2,18 @@ module PeterParser
 
   module Components
 
-    class XpathSelector
+    #Value object used to extract nodes from nodesets using XPath or CSS.
+    class NodesetSelector
 
-      def initialize(selector='./', range=0..-1)
+      def initialize(selector=['./'], range=0..-1)
 
-        @selector = selector
+        @selector = [*selector]
         @range = range
       end
 
       def _extract!(resources)
 
-        return resources[:content].xpath(@selector)[@range]
+        return resources[:content].search(*@selector)[@range]
       end
 
       def first

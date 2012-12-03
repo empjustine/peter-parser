@@ -55,6 +55,7 @@ module PeterParser
   end
 end
 
+#single point of insertion for CorePatches::Callbacks
 class Object
 
   include PeterParser::CorePatches::Callbacks

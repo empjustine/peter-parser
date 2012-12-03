@@ -14,13 +14,11 @@ module PeterParser
   module RpcQueueEnqueuer
     require 'resque'
 
-    # callback that adds jobs to queue
+    # callback that enqueues all toplevel keys jobs to toplevel workers
     def enqueue(resources)
 
-      puts resources.inspect
-
       resources.each { |field, jobs|
-        next unless field.is_a? Class
+        next unless field.respond_to? :perform
         jobs.each { |job|
           Resque.enqueue(field, job)
         }
