@@ -4,7 +4,7 @@ module PeterParser
     require 'resque'
 
     # redis worker class entry point for PeterParser::Parser
-    def perform(job={})
+    def perform(job=Hash.new)
 
       instance = self.new(job)
       return instance.run

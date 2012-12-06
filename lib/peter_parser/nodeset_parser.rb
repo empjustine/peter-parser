@@ -12,7 +12,7 @@ module PeterParser
     attr_reader :resource
 
     # takes a class parser declaration and prepare a job resources
-    def initialize(job={})
+    def initialize(job=Hash.new)
 
       @resource = {}
 

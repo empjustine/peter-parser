@@ -29,7 +29,7 @@ module PeterParser
       # resolves extract by delegating to child nodes
       def _extract!(resources)
 
-        return map{ |rule|
+        return map { |rule|
           rule.extract(resources)
         }
       end
@@ -40,7 +40,7 @@ module PeterParser
       # resolves extract by delegating to child nodes
       def _extract!(resources)
 
-        return ::Hash[map{ |field, rule|
+        return ::Hash[map { |field, rule|
           [field, rule.extract(resources)]
         }]
       end

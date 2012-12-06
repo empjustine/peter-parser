@@ -33,17 +33,4 @@ module PeterParser
       return resources[:content] = resources[:page].root
     end
   end
-
-  module JsonParser
-    require 'json'
-
-    # parses page content. meant to replace PeterParser::WebScraper for json
-    # requests
-    def content(resources)
-
-      return resources[:content] = JSON.parse(
-        resources[:page].body
-      )
-    end
-  end
 end
