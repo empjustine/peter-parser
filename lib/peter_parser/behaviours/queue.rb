@@ -1,30 +1,38 @@
 module PeterParser
 
-  module RpcQueueWorker
+  module RpcQueue
     require 'resque'
 
-    # redis worker class entry point for PeterParser::Parser
-    def perform(job=Hash.new)
+    module Worker
 
-      instance = self.new(job)
-      return instance.run
+      # redis worker class entry point for PeterParser::Parser
+      def perform(job=Hash.new)
+
+        instance = self.new(job)
+        return instance.run
+      end
     end
-  end
 
-  module RpcQueueEnqueuer
-    require 'resque'
+    module EnqueueableHash
 
-    # callback that enqueues all toplevel keys jobs to toplevel workers
-    def enqueue(resources)
+      # callback that enqueues all toplevel keys jobs to toplevel workers
+      def enqueue(resources=nil)
 
-      resources.each { |field, jobs|
-        next unless field.respond_to? :perform
-        jobs.each { |job|
-          Resque.enqueue(field, job)
+        self.each { |field, jobs|
+          next unless field.respond_to? :perform
+          [*jobs].each { |job|
+            Resque.enqueue(field, job)
+          }
         }
-      }
 
-      return resources
+        return resources
+      end
     end
   end
+end
+
+# Single point of insertion for CorePatches::ListExtract
+class Hash
+
+  include PeterParser::RpcQueue::EnqueueableHash
 end

@@ -1,10 +1,12 @@
 module PeterParser
 
+  # Implements a Web Scraper based on Mechanize and Nokogiri. Plumbing from
+  # these gems are exposed by the resources hash, under :agent and :page keys.
   module WebScraper
     require 'mechanize'
     require 'logger'
 
-    # initialize Mechanize agent to parse page
+    # Initialize Mechanize agent to parse page.
     def agent(resources)
 
       resources[:agent] ||= Mechanize.new() { |_agent|
@@ -17,7 +19,7 @@ module PeterParser
       return resources[:agent]
     end
 
-    # tell Mechanize to fetch a url
+    # Tell Mechanize to fetch a url.
     def fetch(resources)
 
       raise NoUrlError unless resources['url']
@@ -27,7 +29,7 @@ module PeterParser
       )
     end
 
-    # asks for page nodeset
+    # Asks for page Nokogiri nodeset.
     def content(resources)
 
       return resources[:content] = resources[:page].root

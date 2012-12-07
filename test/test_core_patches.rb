@@ -4,7 +4,7 @@ class Klass
 
   def initialize
 
-    _inject_callbacks
+    inject_callbacks
   end
 
   def _50__klass__after_extract__callback(_)

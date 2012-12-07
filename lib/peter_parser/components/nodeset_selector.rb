@@ -1,8 +1,10 @@
 module PeterParser
 
+  # Represents Object whose instances are fully integrated with PeterParser's
+  # #_extract! and #extract message calls.
   module Components
 
-    #Value object used to extract nodes from nodesets using XPath or CSS.
+    # Value object used to extract nodes from nodesets using XPath or CSS.
     class NodesetSelector
 
       def initialize(selector=['./'])
@@ -14,6 +16,14 @@ module PeterParser
 
         return resources[:content].search(*@selector)
       end
+    end
+  end
+end
+
+
+module PeterParser
+  module Components
+    class NodesetSelector
 
       def first
 

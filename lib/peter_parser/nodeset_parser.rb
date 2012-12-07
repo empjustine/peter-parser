@@ -2,21 +2,23 @@ module PeterParser
 
   # Actually gets things done.
   # Seriously this implements basic callback behaviour to get the HTML and parse
-  # it.
+  # it. What you do with whatever comes out from it it's your fault.
   class NodesetParser
 
     include PeterParser::WebScraper
-    extend  PeterParser::RpcQueueWorker
-    include PeterParser::RpcQueueEnqueuer
+    extend  PeterParser::RpcQueue::Worker
 
+    # Acessor to the job's resource, while it's in pipe transit system.
     attr_reader :resource
 
-    # takes a class parser declaration and prepare a job resources
+    # Takes a parser class and prepare job's resources
+    #
+    # job accepts both an Hash(recomended) or a string (a lazy kludge, mostly
+    # meant for testing environments. and some legacy parsers we keep around).
     def initialize(job=Hash.new)
 
       @resource = {}
 
-      # lazy kludge, mostly for testing environments. and some legacy parsers.
       job = { 'url' => job } if job.is_a? String
 
       [default_job, job].each { |raw_resource|
@@ -25,38 +27,46 @@ module PeterParser
         }
       }
 
-      _inject_callbacks
+      inject_callbacks
     end
 
-    # default http/nodeset type resource fetching, integrated using the callback
-    # system. a example implementation of "ordered and namespaced event system
-    # injected callback methods"
-    def _50__nodeset_parser__before_extract__callback(resources)
+    # Ask the current behaviour (PeterParser::WebScraper) to actually fetch the
+    # resources.
+    def _40__nodeset_parser__before_extract__callback(resources)
 
       fetch(resources)
-      content(resources)
+
       return resources
     end
 
-    # definition of a task. should accept the #extract call
+    # Ask the current behaviour (PeterParser::WebScraper) to parse page's
+    # contents.
+    def _50__nodeset_parser__before_extract__callback(resources)
+
+      content(resources)
+
+      return resources
+    end
+
+    # Definition of a task. Should accept the #extract call.
     def rules
 
       raise PeterParser::NoRulesError
     end
 
-    # default job, when none given. most times should be overridden.
+    # Default job, when none given.
     def default_job
 
       return {}
     end
 
-    # definition of what to extract inside worker
+    # Definition of what to extract inside worker.
     def _extract!(resources)
 
       return rules.extract(resources)
     end
 
-    # entry point for really start parsing the page
+    # Entry point for really start parsing the page.
     def run
 
       return @resource[:data] = extract(@resource)

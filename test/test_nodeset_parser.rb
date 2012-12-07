@@ -29,12 +29,10 @@ class EnqueuingNodesetParser < PeterParser::NodesetParser
 
   @queue = :test
 
-  include PeterParser::RpcQueueEnqueuer
-
   def rules
     {
       EnqueuingNodesetParser => PeterParser::Components::NodesetSelector.new('//a/@href').content
-    }.on(:after_extract, method(:enqueue))
+    }.on(:after_extract, :enqueue)
   end
 end
 

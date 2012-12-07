@@ -31,7 +31,7 @@ module PeterParser
       end
 
       # appends decorated method names to callback system
-      def _inject_callbacks
+      def inject_callbacks
 
         methods.sort.each { |m|
           match = m.to_s.match(/^_(.*)__(.*)__(.*)__callback$/)
@@ -55,7 +55,7 @@ module PeterParser
   end
 end
 
-#single point of insertion for CorePatches::Callbacks
+# Single point of insertion for CorePatches::Callbacks
 class Object
 
   include PeterParser::CorePatches::Callbacks
