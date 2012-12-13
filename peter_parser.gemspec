@@ -8,6 +8,7 @@ Gem::Specification.new do |s|
   s.authors     = ['lggassert']
   s.email       = ['lggassert@gmail.com']
   s.homepage    = 'https://github.com/lggassert/peter-parser'
+  s.summary     = 'OpenSource parser.'
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
