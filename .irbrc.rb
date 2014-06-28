@@ -3,6 +3,7 @@ $:.push File.expand_path('../test', __FILE__)
 
 
 require 'simplecov'
+require 'test/unit'
 SimpleCov.start do
   add_filter '/vendor/'
 end

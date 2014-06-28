@@ -31,7 +31,7 @@ module PeterParser
   end
 end
 
-# Single point of insertion for CorePatches::ListExtract
+# Single point of insertion for RpcQueue::EnqueueableHash
 class Hash
 
   include PeterParser::RpcQueue::EnqueueableHash

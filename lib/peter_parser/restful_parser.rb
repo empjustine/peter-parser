@@ -3,12 +3,12 @@ module PeterParser
   # Actually gets things done.
   # Seriously this implements basic callback behaviour to get the HTML and parse
   # it. What you do with whatever comes out from it it's your fault.
-  class NodesetParser
+  class RepresentationalStateTransferParser
 
     include PeterParser::WebScraper
     extend  PeterParser::RpcQueue::Worker
 
-    # Acessor to the job's resource, while it's in pipe transit system.
+    # Acess to parser's pumbling.
     attr_reader :resource
 
     # Takes a parser class and prepare job's resources
@@ -51,13 +51,7 @@ module PeterParser
     # Definition of a task. Should accept the #extract call.
     def rules
 
-      raise PeterParser::NoRulesError
-    end
-
-    # Default job, when none given.
-    def default_job
-
-      return {}
+      raise PeterParser::NoManifestError
     end
 
     # Definition of what to extract inside worker.
@@ -67,9 +61,12 @@ module PeterParser
     end
 
     # Entry point for really start parsing the page.
+    # Method called by RPC's call
     def run
 
       return @resource[:data] = extract(@resource)
     end
   end
+
+  RestfulParser = RepresentationalStateTransferParser
 end
